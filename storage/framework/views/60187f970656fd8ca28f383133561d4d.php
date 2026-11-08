@@ -1,0 +1,7 @@
+<?php $__env->startSection('content'); ?>
+<?php
+dm_heading('Your profile','Keep your account details up to date.');echo '<div class="row g-4"><div class="col-lg-4"><section class="panel p-4 text-center">'.dm_avatar($u,'large').'<h2 class="mt-3">'.dm_esc($u['name']).'</h2>'.dm_badge(DORMATE_ROLES[$u['role']]);dm_detail('Email',$u['email']?:'Not provided');if(!empty($u['mobile_number']))dm_detail('Mobile sign-in',$u['mobile_number']);if($u['room_number'])dm_detail('Room',$u['room_number']);echo dm_link_button('Change password','password',[],'light').'<hr>';dm_begin_form('logout','profile');dm_submit_button('Sign out','outline-danger');echo '</form></section></div><div class="col-lg-8"><section class="panel p-4"><h2>Edit profile</h2>';dm_begin_form('profile','profile',[],true);dm_field('name','Full name',$u['name'],'text','required maxlength="100"');echo '<p class="small muted">Contact details do not change your sign-in email or mobile number.</p>';dm_field('phone','Contact number',$u['phone'],'tel','maxlength="20"');dm_field('photo','Profile photo (optional; 2 MB max)','','file','accept="image/jpeg,image/png,image/webp"');dm_submit_button('Save changes');echo '</form></section></div></div>';
+?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\DorMate_Web_Laravel\DorMate-Laravel\resources\views/dormate/profile.blade.php ENDPATH**/ ?>

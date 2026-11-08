@@ -1,0 +1,6 @@
+@extends('layouts.app')
+@section('content')
+<?php
+$r=dm_get_report($u,(int)(request()->query('id')??0));dm_heading($r['title'],'Room '.$r['room_number'].' · '.dm_pretty_date($r['created_at']));echo '<section class="panel form-panel">'.dm_badge($r['status']).'<p class="mt-3 preline">'.dm_esc($r['description']).'</p>';dm_detail('Assigned to',$r['staff_name']??'Unassigned');if($r['photo_path'])echo '<img class="receipt" alt="Reported issue" src="'.route('media').'?kind=report&amp;id='.$r['id'].'">';if(dm_is_admin($u)&&$r['status']!=='RESOLVED'){$opts=[];foreach(dm_all("SELECT id,name FROM users WHERE dorm_id=? AND role='MAINTENANCE_STAFF' AND status='active'",[$u['dorm_id']]) as $s)$opts[$s['id']]=$s['name'];dm_begin_form('assign_staff','report',['id'=>$r['id']]);dm_hidden('id',$r['id']);dm_select_field('staff_id','Assign staff',$opts,$r['assigned_staff_id']??'','required');dm_submit_button('Save assignment');echo '</form>';}if(in_array($u['role'],['DORM_ADMIN','MAINTENANCE_STAFF'],true)&&$r['assigned_staff_id']&&$r['status']!=='RESOLVED'){dm_begin_form('update_report','report',['id'=>$r['id']]);dm_hidden('id',$r['id']);dm_submit_button($r['status']==='PENDING'?'Start work':'Mark resolved');echo '</form>';}echo '</section>';
+?>
+@endsection

@@ -1,0 +1,7 @@
+<?php $__env->startSection('content'); ?>
+<?php
+dm_heading('Community board',$u['role']==='SUPER_ADMIN'?'Review announcements across dorms.':'Updates from your dorm administrator.',in_array($u['role'],['DORM_ADMIN','SUPER_ADMIN'],true)?dm_link_button('Post announcement','post_form',[],'primary','plus'):'');$posts=dm_get_posts($u);echo '<div class="row g-4">';foreach($posts as $p){echo '<div class="col-lg-6"><article class="panel p-4">';if(!$p['read_at'])echo '<span class="badge text-bg-info mb-3">Unread</span>';echo '<h2>'.dm_esc($p['title']).'</h2><p class="preline">'.dm_esc($p['body']).'</p><p class="small text-muted">'.dm_esc($p['author_name']).' · '.dm_pretty_date($p['created_at']).'</p>';if(!$p['read_at']){dm_begin_form('read_post','announcements');dm_hidden('id',$p['id']);dm_submit_button('Mark as read','light');echo '</form>';}if((int)$p['posted_by']===(int)$u['id']){echo dm_link_button('Edit','post_form',['id'=>$p['id']],'light');echo '<details class="mt-3"><summary>Remove announcement</summary>';dm_begin_form('delete_post','announcements');dm_hidden('id',$p['id']);dm_submit_button('Confirm removal','outline-danger');echo '</form></details>';}echo '</article></div>';}if(!$posts)dm_empty_state('Nothing posted yet','Community updates will appear here.');echo '</div>';
+?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\USER\DorMate_Web_Laravel\DorMate-Laravel\resources\views/dormate/announcements.blade.php ENDPATH**/ ?>
